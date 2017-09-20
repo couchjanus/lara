@@ -15,9 +15,12 @@ class PostController extends Controller
     public function index()
     {
         //
-        $articles = Post::latest()->paginate(5);
-        return view('posts.index',compact('articles'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        // $articles = Post::latest()->paginate(5);
+        // return view('posts.index',compact('articles'))
+        //     ->with('i', (request()->input('page', 1) - 1) * 5);
+
+        $articles = Post::latest()->get();
+        return view('articles.index',compact('articles'));
     }
 
     /**
@@ -28,7 +31,8 @@ class PostController extends Controller
     public function create()
     {
         //
-        return view('posts.create');
+        return view('articles.create');
+        // return view('posts.create');
     }
 
     /**
@@ -72,7 +76,7 @@ class PostController extends Controller
     {
         //
         $article = Post::find($id);
-        return view('posts.edit',compact('article'));
+        return view('articles.edit',compact('article'));
         
     }
 
