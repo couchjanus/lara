@@ -15,4 +15,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('articles','PostController');
+Route::resource('articles','Admin\PostController');
+Route::resource('users','Admin\UserController');
