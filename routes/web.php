@@ -17,3 +17,14 @@ Route::get('/', function () {
 
 Route::resource('articles','Admin\PostController');
 Route::resource('users','Admin\UserController');
+
+Auth::routes();
+
+Route::get('/home', 'ProfileController@index')->name('home');
+
+# Profile
+// Route::resource('profile', 'ProfileController', ['only' => ['index', 'edit', 'update']]);
+Route::get('/profile/edit/{username}', 'ProfileController@edit');
+Route::get('/{username}', ['as' => 'profile', 'uses' => 'ProfileController@index']);
+
+

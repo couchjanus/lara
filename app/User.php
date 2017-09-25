@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+// use App\Profile;
 use Hash;
 
 class User extends Authenticatable
@@ -34,4 +34,10 @@ class User extends Authenticatable
         if ($input)
             $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
     }
+
+    public function profile()
+    {
+        return $this->hasOne('App\Profile');
+    }
+
 }
