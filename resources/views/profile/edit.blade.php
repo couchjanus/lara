@@ -35,22 +35,35 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group">
+                                        <span class="form-label">First Name</span>
+                                        <input type="text" class="form-control col-md-12" placeholder="First Name" name="first_name" value="{{$data->profile->first_name}}">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="form-label">Last Name</span>
+                                        <input type="text" class="form-control col-md-12" placeholder="Last Name" name="last_name" value="{{$data->last_name}}">
+                                    </div>
+                                    <div class="input-group">
                                         <span class="form-label">About</span>
                                         <textarea type="text" class="form-control col-md-12" rows="10" placeholder="About me" name="bio" value="{{$data->bio}}"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <span class="form-label">City</span>
-                                        <input type="text" class="form-control col-md-12" placeholder="City Name" name="city" value="{{$data->city}}">
+                                        <span class="form-label">Address</span>
+                                        <input type="text" class="form-control col-md-12" placeholder="City Name" name="city" value="{{$data->addressline1}}">
                                     </div>
                                     <div class="input-group">
                                         <span class="form-label">Postcode</span>
                                         <input type="text" class="form-control col-md-12" placeholder="County Name" name="postcode" value="{{$data->postcode}}">
                                     </div>
                                     <div class="input-group">
-                                        <span class="form-label">Country</span>
-                                        <input type="text" class="form-control col-md-12" placeholder="Country Name" name="country" value="{{$data->country}}">
+                                        <span class="form-label">Gender</span>
+                                        <select class="form-control col-md-12" name="gender" value="{{$data->profile->gender}}">
+                                            <option value="m">Male</option>
+                                            <option value="f">Female</option>
+
+                                        </select>
+                                        
                                     </div>
                                     <div class="input-group">
                                         <input type="submit" class="btn btn-success pull-right">
