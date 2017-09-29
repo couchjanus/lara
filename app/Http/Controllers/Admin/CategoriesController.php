@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-use App\Post;
 use App\Category;
 
-class PostController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +15,11 @@ class PostController extends Controller
      */
     public function index()
     {
+        //
+        $categories = Category::all();
 
-        $articles = Post::latest()->get();
-        return view('admin.articles.index',compact('articles'));
+        return view('admin.categories.index')
+            ->with('categories', $categories);
     }
 
     /**
@@ -30,10 +30,8 @@ class PostController extends Controller
     public function create()
     {
         //
-        $categories = Category::pluck('name', 'id');
-
-        return view('admin.articles.create')->with('categories', $categories);
-        
+        $categories = Category::all();
+        return view('admin.categories.create')->with('categories', $categories);
     }
 
     /**
@@ -45,13 +43,16 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
-        request()->validate([
-            'title' => 'required',
-            'content' => 'required',
-        ]);
-        Post::create($request->all());
-        return redirect()->route('articles.index')
-                        ->with('success','Article created successfully');
+        $this->validate($request, array(
+                'name' => 'required|max:255',
+            ));
+
+        // store in the database
+        $category = new Category;
+        $category->name = $request->name;
+        $category->save();
+
+        return redirect()->route('categories.show', $category->id);
     }
 
     /**
@@ -63,8 +64,10 @@ class PostController extends Controller
     public function show($id)
     {
         //
-        $article = Post::find($id);
-        return view('admin.articles.show',compact('article'));
+        $category = Category::find($id);
+
+       return view('admin.categories.show')
+                    ->with('category', $category);
     }
 
     /**
@@ -76,10 +79,12 @@ class PostController extends Controller
     public function edit($id)
     {
         //
-        $article = Post::find($id);
-        $categories = Category::pluck('name', 'id');
-        return view('admin.articles.edit')->withArticle($article)->withCategories($categories);
-        
+        $category = Category::find($id);
+        $categories = Category::all();
+      
+        // return the view and pass in the var we previously created
+        return view('admin.categories.edit')->withCategory($category)->with('categories', $categories);
+
     }
 
     /**
@@ -92,13 +97,18 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         //
-        request()->validate([
-            'title' => 'required',
-            'content' => 'required',
-        ]);
-        Post::find($id)->update($request->all());
-        return redirect()->route('articles.index')
-                        ->with('success','Article updated successfully');
+        
+        $category = Category::find($id);
+        
+        $this->validate($request, array(
+           'name' => 'required|max:255',
+        ));
+
+        $category->name = $request->input('name');
+        $category->save();
+
+        return redirect()->route('categories.show', $category->id);
+
     }
 
     /**
@@ -110,8 +120,10 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
-        Post::find($id)->delete();
-        return redirect()->route('admin.articles.index')
-                        ->with('success','Article deleted successfully');
+        $category = Category::find($id);
+        $category->delete();
+
+        return redirect()->route('categories.index');
+
     }
 }
