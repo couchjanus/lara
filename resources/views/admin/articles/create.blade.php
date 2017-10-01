@@ -45,10 +45,18 @@
                     </div>
                             
                     <div class="row">
+                        <div class="row">
                         <div class="col-xs-6 form-group">
                             {{ Form::label('category_id', 'Select Category:') }}
                             {!! Form::select('category_id', $categories, null, ['class' => 'form-control']) !!}
                         </div>
+                        <div class="col-xs-6 form-group">
+
+                            {!! Form::label('tag_list', 'Tags:') !!}
+                            {!! Form::select('tag_list[]', $tags, null, ['id' => 'tag_list', 'class' => 'form-control', 'multiple', 'style' => 'width: 100%']) !!}
+                            
+                        </div>
+                    </div>
                         
                     </div>
                 </div>

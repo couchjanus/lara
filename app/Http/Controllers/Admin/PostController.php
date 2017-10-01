@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Post;
 use App\Category;
+use App\Tag;
 
 class PostController extends Controller
 {
@@ -32,8 +33,10 @@ class PostController extends Controller
         //
         $categories = Category::pluck('name', 'id');
 
-        return view('admin.articles.create')->with('categories', $categories);
-        
+        $tags = Tag::pluck('name', 'id');
+
+        return view('admin.articles.create')->with('categories', $categories)->with('tags', $tags);
+
     }
 
     /**
@@ -49,7 +52,20 @@ class PostController extends Controller
             'title' => 'required',
             'content' => 'required',
         ]);
-        Post::create($request->all());
+
+        // store in the database
+        $article = new Post;
+
+        $article->title = $request->title;
+        $article->content = $request->content;
+        
+        $article->category_id = $request->category_id;
+
+        $article->save();
+
+        $article->tags()->sync($request->input('tag_list'), false);
+
+        // Post::create($request->all());
         return redirect()->route('articles.index')
                         ->with('success','Article created successfully');
     }
@@ -63,7 +79,10 @@ class PostController extends Controller
     public function show($id)
     {
         //
+        
+        
         $article = Post::find($id);
+
         return view('admin.articles.show',compact('article'));
     }
 
@@ -78,8 +97,11 @@ class PostController extends Controller
         //
         $article = Post::find($id);
         $categories = Category::pluck('name', 'id');
-        return view('admin.articles.edit')->withArticle($article)->withCategories($categories);
-        
+        $tags = Tag::pluck('name', 'id');
+      
+        // return the view and pass in the var we previously created
+        return view('admin.articles.edit')->withArticle($article)->withCategories($categories)->withTags($tags);
+
     }
 
     /**
@@ -96,7 +118,17 @@ class PostController extends Controller
             'title' => 'required',
             'content' => 'required',
         ]);
-        Post::find($id)->update($request->all());
+        // Post::find($id)->update($request->all());
+
+        $article = Post::find($id);;
+        $article->title = $request->input('title');
+        $article->content = $request->input('content');
+
+        $article->category_id = $request->input('category_id');
+
+        $article->save();
+        
+        $article->tags()->sync($request->input('tag_list'));
         return redirect()->route('articles.index')
                         ->with('success','Article updated successfully');
     }

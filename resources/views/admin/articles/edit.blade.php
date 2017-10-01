@@ -15,9 +15,11 @@
                     {{ Form::label('title', 'Title:') }}
                     {{ Form::text('title', null, ["class" => 'form-control input-lg']) }}
 
-
                     {!! Form::label('category_id', 'Category', ['class' => 'control-label']) !!}
                     {!! Form::select('category_id', $categories, old('category_id'), ['class' => 'form-control select2']) !!}
+
+                    {!! Form::label('tag_list', 'Tags:') !!}
+                    {!! Form::select('tag_list[]', $tags, $article->tags, ['id' => 'tag_list', 'class' => 'form-control', 'multiple', 'style' => 'width: 100%']) !!}
 
                     {{ Form::label('content', "Content:", ['class' => 'form-spacing-top']) }}
                     {{ Form::textarea('content', null, ['class' => 'form-control']) }}
@@ -30,11 +32,8 @@
                     </div>
 
             {!! Form::close() !!}
-            
                 
         </div>
-
-
         
             <div class="col-md-4">
             <div class="well">

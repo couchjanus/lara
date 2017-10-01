@@ -18,6 +18,7 @@ Route::get('/', function () {
 Route::resource('articles','Admin\PostController');
 Route::resource('users','Admin\UserController');
 Route::resource('categories','Admin\CategoriesController');
+Route::resource('tags','Admin\TagsController');
 
 Auth::routes();
 
