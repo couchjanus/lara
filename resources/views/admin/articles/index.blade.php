@@ -57,5 +57,7 @@
                 </tbody>
             </table>
         @endif
+        <hr>
+    {{ $articles->links() }}
     </div>
 @endsection
