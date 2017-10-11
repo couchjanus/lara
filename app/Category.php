@@ -7,8 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     //
-    public function articles()
+    public function posts()
     {
         return $this->hasMany('App\Post');
     }
+
+    public function latestPost()
+    {
+      return $this->hasOne('App\Post')->latest();
+    }
+
 }

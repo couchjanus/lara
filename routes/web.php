@@ -24,6 +24,12 @@ Auth::routes();
 
 Route::get('/home', 'ProfileController@index')->name('home');
 
+Route::get('/blog','PostController@index')->name('blog.index');
+Route::get('/blog/show/{id}','PostController@show')->name('blog.show');
+
+Route::get('/list','CategoryController@index')->name('list.index');
+Route::get('/list/single/{id}','CategoryController@single')->name('list.single');
+
 # Profile
 // Route::resource('profile', 'ProfileController', ['only' => ['index', 'edit', 'update']]);
 Route::get('/profile/edit/{username}', 'ProfileController@edit');
