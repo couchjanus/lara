@@ -4,11 +4,13 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-// use App\Profile;
+
 use Hash;
 
 class User extends Authenticatable
 {
+    use Traits\HasRoles;
+    
     use Notifiable;
 
     /**

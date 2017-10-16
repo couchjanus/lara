@@ -20,6 +20,10 @@ Route::resource('users','Admin\UserController');
 Route::resource('categories','Admin\CategoriesController');
 Route::resource('tags','Admin\TagsController');
 
+Route::resource('roles','Admin\RolesController');
+
+Route::resource('permissions', 'Admin\PermissionsController');
+
 Auth::routes();
 
 Route::get('/home', 'ProfileController@index')->name('home');

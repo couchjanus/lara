@@ -1,49 +1,107 @@
 @extends('layouts.admin')
 
 @section('content')
+
     <div class="row">
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-                <h2>Edit An User</h2>
-            </div>
-            <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('users.index') }}"> Back</a>
-            </div>
-        </div>
+        <h1 class="page-header">User</h1>
     </div>
 
-      <form method="post" action="{{ route('users.update', $user->id) }}">
-        {{csrf_field()}}
-        <input name="_method" type="hidden" value="PATCH">
         <div class="row">
-          <div class="col-md-4"></div>
-          <div class="form-group col-md-4">
-            <label for="title">Name:</label>
-            <input type="text" class="form-control" name="name" value="{{$user->name}}">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4"></div>
-          <div class="form-group col-md-4">
-            <label for="title">Email:</label>
-            <input type="email" class="form-control" name="email" value="{{$user->email}}">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4"></div>
-          <div class="form-group col-md-4">
-            <label for="title">Password:</label>
-            <input type="password" class="form-control" name="password" value="{{$user->password}}">
-          </div>
-        </div>
-        
-        <div class="row">
-          <div class="col-md-4"></div>
-          <div class="form-group col-md-4">
-            <button type="submit" class="btn btn-success" style="margin-left:38px">Update user</button>
-          </div>
-        </div>
-      </form>
-    
-@endsection
+         {!! Form::model($user, ['route' => ['users.update', $user->id], 'method' => 'patch', 'class' => 'edit']) !!}
 
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Edit user
+                </div>
+
+                <div class="panel-body">
+                    <div class="col-md-8 form-group">
+                    <div class="row">
+                    
+                        <div class="col-md-8 form-group">
+                            {!! Form::label('name', 'Name*', ['class' => 'control-label']) !!}
+                            {!! Form::text('name', null, ['class' => 'form-control']) !!}
+                            <p class="help-block"></p>
+                            @if($errors->has('name'))
+                                <p class="help-block">
+                                    {{ $errors->first('name') }}
+                                </p>
+                            @endif
+                        </div>
+                    
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-4 form-group">
+                            {!! Form::label('email', 'Email*', ['class' => 'control-label']) !!}
+                            {!! Form::email('email', null, ['class' => 'form-control']) !!}
+                            <p class="help-block"></p>
+                            @if($errors->has('email'))
+                                <p class="help-block">
+                                    {{ $errors->first('email') }}
+                                </p>
+                            @endif
+                        </div>
+                        <div class="col-xs-4 form-group">
+                            {!! Form::label('password', 'Password*', ['class' => 'control-label']) !!}
+                            {!! Form::password('password',  ['class' => 'form-control']) !!}
+                            <p class="help-block"></p>
+                            @if($errors->has('password'))
+                                <p class="help-block">
+                                    {{ $errors->first('password') }}
+                                </p>
+                            @endif
+                        </div>
+                        <div class="col-xs-8 form-group">
+                            {!! Form::label('role_list', 'Roles:') !!}
+                            {!! Form::select('role_list[]', $roles, $user->roles, ['id' => 'role_list', 'class' => 'form-control', 'multiple', 'style' => 'width: 100%']) !!}
+                            
+                        </div>
+                    </div>
+                    <div class="form-group text-right">
+                        <a href="{!! url('/users') !!}" class="btn btn-default raw-left">Cancel</a>
+                        {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
+                    </div>
+
+                    {!! Form::close() !!}
+                </div>
+                <div class="col-md-4">
+                    <div class="well">
+
+                        <dl class="dl-horizontal">
+                            <label>Created At:</label>
+                            <p>{{ date('M j, Y h:ia', strtotime($user->created_at)) }}</p>
+                        </dl>
+
+                        <dl class="dl-horizontal">
+                            <label>Last Updated:</label>
+                            <p>{{ date('M j, Y h:ia', strtotime($user->updated_at)) }}</p>
+                        </dl>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                {!! Html::linkRoute('users.show', 'Show', array($user->id), array('class' => 'btn btn-primary btn-block')) !!}
+                            </div>
+                            <div class="col-sm-6">
+                                {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'DELETE']) !!}
+
+                                {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-block']) !!}
+
+                                {!! Form::close() !!}
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ Html::linkRoute('users.index', '<< See All Users', array(), ['class' => 'btn btn-default btn-block btn-h1-spacing']) }}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+
+@endsection

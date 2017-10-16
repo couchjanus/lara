@@ -28,8 +28,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
-        return view('admin.users.create');
+        $roles = \App\Role::pluck('name', 'id');
+        return view('admin.users.create')->with('roles', $roles);
     }
 
     /**
@@ -48,6 +48,9 @@ class UserController extends Controller
             'password' => 'required',
         ]);
         $user = User::create($request->all());
+
+        $user->roles()->sync($request->input('role_list'), false);
+
         return redirect()->route('users.index')
                         ->with('success','User created successfully');
 
@@ -62,9 +65,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
         $user = User::findOrFail($id);
-        return view('admin.users.show', compact('user'));
+        $roles = \App\Role::pluck('name', 'id');
+        return view('admin.users.show', compact('user'))->with('roles', $roles);
     }
 
     /**
@@ -77,7 +80,8 @@ class UserController extends Controller
     {
         //
         $user = User::findOrFail($id);
-        return view('admin.users.edit', compact('user'));
+        $roles = \App\Role::pluck('name', 'id');
+        return view('admin.users.edit', compact('user'))->with('roles', $roles);
     }
 
     /**
@@ -93,6 +97,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->update($request->all());
 
+        $user->roles()->sync($request->input('role_list'));
         return redirect()->route('users.index');
     }
 
